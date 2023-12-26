@@ -29,7 +29,7 @@ while true
                     echo "content: $content"
 
                     curl --request PUT \
-                    --url https://api.cloudflare.com/client/v4/zones/bf4d5da37b541a982eb63cda1be2a90f/dns_records/$id \
+                    --url https://api.cloudflare.com/client/v4/zones/$zoneIdentifier/dns_records/$id \
                     --header 'Content-Type: application/json' \
                     --header "X-Auth-Email: $authEmail" \
                     --header "X-Auth-Key: $globalApiKey" \
