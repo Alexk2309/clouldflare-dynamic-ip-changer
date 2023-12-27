@@ -101,15 +101,13 @@ To ensure the Dynamic DNS update script runs continuously and automatically at s
     ```bash
     sudo systemctl enable ddns-update.service
 
-
-4. **Reload systemd**
+6. **Reload systemd**
 
    Reload the systemd manager to read the newly created service file:
 
    ```bash
    sudo systemctl daemon-reload
    
-  
 # Viewing Logs
 To view logs for your IP changer service, you can use journalctl:
 
