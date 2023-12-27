@@ -7,8 +7,6 @@ zoneIdentifier='<ZONE_KEY>'
 while true 
     do 
         currentIp=$(curl -s https://api64.ipify.org)
-        lastIp=$(head -n 1 old_ip.txt)
-
         if [ "$lastIp" != "$currentIp" ]; then
             response=$(curl -s --request GET \
                 --url https://api.cloudflare.com/client/v4/zones/$zoneIdentifier/dns_records \
@@ -41,10 +39,9 @@ while true
                     }'
                 fi
             done
-            echo "$currentIp" >| old_ip.txt
+            echo "Changing $lastIp to $currentIp"
+            lastIp="$currentIp"
         fi
         sleep 300
         echo 'Checking for changed ip'
     done 
-
-        
