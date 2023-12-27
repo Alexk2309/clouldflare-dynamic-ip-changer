@@ -4,15 +4,21 @@ authEmail='<EMAIL>'
 globalApiKey='<KEY>'
 zoneIdentifier='<ZONE_KEY>'
 
+# Use a domain that you are always going to host on your home server.
+# The script will assume your clouldflareIp is from here.
+homeHostedDomain='<HOME_DOMAIN>'
+
 while true 
     do 
         currentIp=$(curl -s https://api64.ipify.org)
-        if [ "$lastIp" != "$currentIp" ]; then
-            response=$(curl -s --request GET \
+        response=$(curl -s --request GET \
                 --url https://api.cloudflare.com/client/v4/zones/$zoneIdentifier/dns_records \
                 --header "X-Auth-Email: $authEmail" \
                 --header "X-Auth-Key: $globalApiKey")
+                
+        cloudflareIp=$(echo "$response" | jq -r '.result[] | select(.name == "'"${homeHostedDomain}"'") | .content')
 
+        if [ "$cloudflareIp" != "$currentIp" ]; then
             for row in $(echo "$response" | jq -c '.result[]'); do
                 # Extract and print relevant information from each record
                 id=$(echo "$row" | jq -r '.id')
@@ -20,7 +26,7 @@ while true
                 type=$(echo "$row" | jq -r '.type')
                 content=$(echo "$row" | jq -r '.content')
 
-                if [ "$content" = "$lastIp" ]; then
+                if [ "$content" = "$cloudflareIp" ]; then
                     echo "Record ID: $id"
                     echo "Name: $name"
                     echo "Type: $type"
@@ -39,8 +45,7 @@ while true
                     }'
                 fi
             done
-            echo "Changing $lastIp to $currentIp"
-            lastIp="$currentIp"
+            echo "Changing $cloudflareIp to $currentIp"
         fi
         sleep 300
         echo 'Checking for changed ip'
