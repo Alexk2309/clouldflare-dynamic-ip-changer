@@ -8,14 +8,14 @@ zoneIdentifier='<ZONE_KEY>'
 # The script will assume your clouldflareIp is from here.
 homeHostedDomain='<HOME_DOMAIN>'
 
-while true 
-    do 
+while true
+    do
         currentIp=$(curl -s https://api64.ipify.org)
         response=$(curl -s --request GET \
                 --url https://api.cloudflare.com/client/v4/zones/$zoneIdentifier/dns_records \
                 --header "X-Auth-Email: $authEmail" \
                 --header "X-Auth-Key: $globalApiKey")
-                
+
         cloudflareIp=$(echo "$response" | jq -r '.result[] | select(.name == "'"${homeHostedDomain}"'") | .content')
 
         if [ "$cloudflareIp" != "$currentIp" ]; then
@@ -49,4 +49,4 @@ while true
         fi
         sleep 300
         echo 'Checking for changed ip'
-    done 
+    done

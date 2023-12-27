@@ -77,15 +77,15 @@ To ensure the Dynamic DNS update script runs continuously and automatically at s
     [Unit]
     Description=<NAME>
     After=network.target
-    
+
     [Service]
     Type=simple
     Restart=always
     ExecStart=/path/to/the/script/
-    
+
     [Install]
     WantedBy=multi-user.target
-    
+
 3. **Save and Close**
 
    Save the file and exit the text editor.
@@ -95,7 +95,7 @@ To ensure the Dynamic DNS update script runs continuously and automatically at s
 
     ```bash
     sudo systemctl start ddns-update.service
-    
+
 5. **Enable the script to start on boot**
 
     ```bash
@@ -107,7 +107,7 @@ To ensure the Dynamic DNS update script runs continuously and automatically at s
 
    ```bash
    sudo systemctl daemon-reload
-   
+
 # Viewing Logs
 To view logs for your IP changer service, you can use journalctl:
 
