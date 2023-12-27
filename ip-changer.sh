@@ -40,7 +40,7 @@ while true
                     --data '{
                         "content": "'"${currentIp}"'",
                         "name": "'"${name}"'",
-                        "type": "A",
+                        "type": "'"${type}"'",
                         "ttl": 1
                     }'
                 fi
